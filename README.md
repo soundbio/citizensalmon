@@ -14,10 +14,11 @@ export PROJECT_HOME=$HOME/Devel
 source /usr/local/bin/virtualenvwrapper.sh
 ```
 
-Open a new terminal (or `source ~/.bashrc`) to reload wherever you added the three lines
+Open a new terminal (or `source ~/.bashrc`) to reload wherever you added the three lines.
+
 Now you have virtualenvwrapper installed and you can create python virtual environments!
 
-Create a virtualenvironment for citizen salmon and install requirements
+Create a virtualenvironment for citizen salmon and install the project requirements
 ```
 $ mkvirtualenv salmon
 $ pip install -r requirements.txt
