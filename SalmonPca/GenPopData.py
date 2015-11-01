@@ -1,4 +1,5 @@
 ﻿""" Class to read GenPop data """
+from multipledispatch import dispatch
 import string
 import fileinput
 import re
@@ -27,12 +28,16 @@ class GenPopData(object):
         section = 'head'
         pop = ''
         individual = ''
-        fish = None
+        fish = False
+        nopop = True
 
         while True:
-            line = self.__fp.readline()
-            if line == '':
-                break
+            if nopop:
+                line = self.__fp.readline()
+                if line == '':
+                    break
+            else:
+                nopop = False
 
             if section == 'fishies':
 
@@ -40,10 +45,10 @@ class GenPopData(object):
                     line = self.__fp.readline()
                     if line == '':
                         raise 'bummer!'
-                    pop = line[0:re.search('\\d', line).start()]
+                    pop = line[0:re.search(r'\d', line).start()]
                     self.__popnames.append(pop)
 
-                if re.search('4\\d', line) != 0:
+                if re.search(r'4\d', line) != 0:
 
                     # save old sample
                     if not fish is None:
@@ -52,10 +57,10 @@ class GenPopData(object):
 
                     # new sample
                     self.__snps = []
-                    individual = line[0:re.search(',\\t', line).start()]
+                    individual = line[0:re.search(r',\t', line).start()]
                     fish = {'pop' : pop, 'individual' : individual}
                     fish.setdefault('alleles', [])
-                    line = line[re.search(',\t', line).start()+2:]
+                    line = line[re.search(r',\t', line).start()+2:]
 
                 line = line.strip(' \t\r\n')
                 self.__snps.extend(line.split('\t'))
@@ -65,10 +70,9 @@ class GenPopData(object):
 
                 if line.startswith('Pop'):
                     section = 'fishies'
-                    line.strip()
-                    self.__fp.seek(-len(line)-1, 1)
+                    nopop = False
                     continue
-                self.__snpnames.append(line)
+                self.__snpnames.append(line.strip(' \t\n'))
                 continue
 
             if section == 'head':
@@ -83,20 +87,21 @@ class GenPopData(object):
         self.__read()
         self.__fp.close()
 
-    def Popnames(self):
+    def popnames(self):
         """Popnames"""
         return self.__popnames
 
-    def Snpnames(self):
+    def snpnames(self):
         """Snpnames"""
         return self.__snpnames
 
-    def Fishies(self):
+    def fishies(self):
         """Fishies"""
         return self.__fishies
 
-    def PopAlleles(self, pop):
-        """PopAlleles"""
+    @dispatch(str)
+    def alleles(self, pop):
+        """Alleles"""
         alleles = []
         for fish in self.__fishies:
             if fish['pop'] != pop:
@@ -104,9 +109,10 @@ class GenPopData(object):
             alleles.extend(fish['alleles'])
         return alleles
 
-    def Alleles(self):
+    @dispatch()
+    def alleles(self):
         """Alleles"""
         alleles = []
         for pop in self.__popnames:
-            alleles.extend(self.PopAlleles(pop))
+            alleles.extend(self.alleles(pop))
         return alleles
