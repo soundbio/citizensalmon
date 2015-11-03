@@ -33,7 +33,7 @@ class Population(object):
         allele0 = snpcount * 4 * [None]
         allele1 = snpcount * 4 * [None]
         idx = 0
-        for snp in data:
+        for snp in self._snps:
             allele0[idx:idx+4] = self.__snptobinCallback(snp[0:2])
             allele1[idx:idx+4] = self.__snptobinCallback(snp[2:4])
             idx = idx + 4
