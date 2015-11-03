@@ -6,7 +6,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 import time
-from math import sqrt, copysign
+from math import sqrt
+
+
 
 N = 800        # number of vectors to generate
 a = 5
