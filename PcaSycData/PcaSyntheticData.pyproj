@@ -6,7 +6,7 @@
     <ProjectGuid>b7ec966a-287b-45f4-935c-94ea4341b342</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>Pca.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -23,10 +23,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="genpop_data.py" />
+    <Compile Include="main.py" />
     <Compile Include="Pca.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PcaSynData.py" />
+    <Compile Include="population.py" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
