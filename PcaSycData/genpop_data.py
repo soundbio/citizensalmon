@@ -44,6 +44,9 @@ class GenPopData(PopApi):
             if nopop:
                 line = fp.readline()
                 if line == '':
+                    if not fish is None:
+                        fish['alleles'] = self._alleles()
+                        self._fishies.append(fish)
                     break
             else:
                 nopop = True
@@ -82,7 +85,7 @@ class GenPopData(PopApi):
                     section = 'snpdata'
                     nopop = False
                     continue
-                self._snpnames.append(line.strip(' \t\n'))
+                self._snpnames.append(line.strip(' \t\r\n'))
                 continue
 
             if section == 'head':
