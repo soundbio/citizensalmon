@@ -1,4 +1,4 @@
-
+﻿
 import os, sys
 lib_path = os.path.abspath(os.path.join('..', 'PcaSycData'))
 sys.path.append(lib_path)
@@ -16,16 +16,20 @@ class AllelesPCA(object):
         return
 
     def popmean(self, pop):
-        mean = None
         if pop == None:
             alleles = self.__population.alleles()
         else:
             alleles = self.__population.alleles(pop)
+
+        mean = None
+        initialized = False
         for allele in alleles:
-            if mean == None:
-                mean = allele
+            if not initialized:
+                initialized = True
+                mean = np.array(allele)
                 continue
-            map(int.add, mean, allele)
+            mean += np.array(allele)
             continue
-        return np.array(mean) / len(alleles)
+        mean = mean.astype(np.float32)
+        return mean / len(alleles)
 
