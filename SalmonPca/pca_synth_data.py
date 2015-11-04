@@ -1,5 +1,9 @@
 ﻿# generate a set of vector data with three principal components on x, y and z axes respectively
 
+import os, sys
+lib_path = os.path.abspath(os.path.join('..', 'PcaSycData'))
+sys.path.append(lib_path)
+
 from population import Population as PopApi
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.interpolate import griddata

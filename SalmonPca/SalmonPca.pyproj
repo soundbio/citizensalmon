@@ -23,18 +23,16 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="genpop_data.py" />
     <Compile Include="main.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pca_alleles.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="pca_example.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="pca_synth_data.py" />
-    <Compile Include="population.py" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="genepop_western_alaska_chinook_RAD.txt" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
