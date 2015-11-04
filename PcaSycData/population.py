@@ -1,6 +1,6 @@
 ﻿# Population provides interface to population allele data
 from multipledispatch import dispatch
-import pickle
+import cPickle
 
 class Population(object):
     """container for population allele data"""
@@ -24,6 +24,8 @@ class Population(object):
     # implementation -- override this for different file types
     def __snptobin(self, snp):
         ret = [0,0,0,0]
+        if snp == '00': 
+            return ret
         ret[int(snp)-1] = 1
         return ret
 
@@ -40,36 +42,44 @@ class Population(object):
         return [allele0, allele1]
 
     def toFile(self, outfile):
-        with open(outfile, 'w', 1) as fp:
-            pickle.dump(self._snpnames, fp)
-            pickle.dump(self._popnames, fp)
-            pickle.dump(self._fishnames, fp)
-            for fish in self._fishies:
-                pickle.dump(fish['pop'], fp)
-                pickle.dump(fish['fishname'], fp)
-                pickle.dump(len(fish['alleles']), fp)
-                for allele in fish['alleles']:
-                    pickle.dump(allele, fp)
+        with open(outfile, 'wb', 1) as fp:
+            cPickle.dump(self._snpnames, fp)
+            cPickle.dump(self._popnames, fp)
+            cPickle.dump(self._fishnames, fp)
+            idx = 0
+            while idx < len(self._fishies):
+                fish = self._fishies[idx]
+                cPickle.dump(fish['pop'], fp)
+                cPickle.dump(fish['fishname'], fp)
+                nalleles = len(fish['alleles'])
+                cPickle.dump(nalleles, fp)
+                jdx = 0
+                while jdx < nalleles:
+                    allele = fish['alleles'][jdx]
+                    cPickle.dump(allele, fp)
+                    jdx = jdx + 1
+                idx = idx + 1
+            fp.flush()
         return
 
     def fromFile(self, infile):
-        with open(infile, 'r', 1) as fp:
-            self._snpnames = pickle.load(fp)
-            self._popnames = pickle.load(fp)
-            self._fishnames = pickle.load(fp)
+        with open(infile, 'rb', 1) as fp:
+            self._snpnames = cPickle.load(fp)
+            self._popnames = cPickle.load(fp)
+            self._fishnames = cPickle.load(fp)
+
             idx = 0
             self._fishies = []
             while idx < len(self._fishnames):
-                idx = idx + 1
-                fish = {'pop' : pickle.load(fp), 'fishname' : pickle.load(fp)}
+                fish = {'pop' : cPickle.load(fp), 'fishname' : cPickle.load(fp)}
                 fish.setdefault('alleles', [])
-                nalleles = pickle.load(fp)
+                nalleles = cPickle.load(fp)
                 jdx = 0
                 while jdx < nalleles:
-                    fish['alleles'].append(pickle.load(fp))
+                    fish['alleles'].append(cPickle.load(fp))
                     jdx = jdx + 1
                 self._fishies.append(fish)
-
+                idx = idx + 1
         return
 
     def popnames(self):
