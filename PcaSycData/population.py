@@ -50,9 +50,6 @@ class Population(object):
     def fishnames(self):
         return self._fishnames
 
-    def __popmean(alleles):
-        return sum(alleles)/len(alleles)
-
     #@dispatch(str,str)
     #def fst(self, pop0, pop1):
     #    # return cached values
