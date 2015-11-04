@@ -13,7 +13,7 @@ if False:
 elif False:
     # read and process data in GenPop file 'genepop_western_alaska_chinook_RAD.txt'
     gpd = GenPopData("genepop_western_alaska_chinook_RAD.txt")
-     gpd.toFile('alaska_chinook.pickle')
+    gpd.toFile('alaska_chinook.pickle')
     apop = Population(None)
     apop.fromFile('alaska_chinook.pickle')
 
