@@ -5,15 +5,17 @@ sys.path.append(lib_path)
 from genpop_data import GenPopData
 from pca_synth_data import PcaSynthData
 from pca_alleles import AllelesPCA
+from population import Population
 
 if False:
     psd = PcaSynthData(5, 3.5, 2, 800)
     psd.test()
-elif True:
+elif False:
     # read and process data in GenPop file 'genepop_western_alaska_chinook_RAD.txt'
     gpd = GenPopData("genepop_western_alaska_chinook_RAD.txt")
      gpd.toFile('alaska_chinook.pickle')
-    apop = Population('alaska_chinook.pickle')
+    apop = Population(None)
+    apop.fromFile('alaska_chinook.pickle')
 
     fishies = gpd.fishies()                     # list of all fish (and alleles) in file
     afishies = apop.fishies()
@@ -24,7 +26,7 @@ elif True:
     alleles = gpd.alleles(gpd.popnames()[2])    # all alleles in third population
 elif True:
     #apop = GenPopData("genepop_western_alaska_chinook_RAD.txt")
-    apop = Population()
+    apop = Population(None)
     apop.fromFile('alaska_chinook.pickle')
     apca = AllelesPCA(apop)
     mean = apca.popmean(apop.popnames()[2])

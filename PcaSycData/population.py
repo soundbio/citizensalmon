@@ -1,6 +1,6 @@
 ﻿# Population provides interface to population allele data
 from multipledispatch import dispatch
-import json
+import pickle
 
 class Population(object):
     """container for population allele data"""
@@ -41,27 +41,34 @@ class Population(object):
 
     def toFile(self, outfile):
         with open(outfile, 'w', 1) as fp:
-            json.dump(self._snpnames, fp)
-            json.dump(self._popnames, fp)
-            json.dump(self._fishnames, fp)
-            json.dump(self._fishies, fp)
-            #pickle.dump(self._snpnames, fp)
-            #pickle.dump(self._popnames, fp)
-            #pickle.dump(self._fishnames, fp)
-            #pickle.dump(self._fishies, fp)
-
+            pickle.dump(self._snpnames, fp)
+            pickle.dump(self._popnames, fp)
+            pickle.dump(self._fishnames, fp)
+            for fish in self._fishies:
+                pickle.dump(fish['pop'], fp)
+                pickle.dump(fish['fishname'], fp)
+                pickle.dump(len(fish['alleles']), fp)
+                for allele in fish['alleles']:
+                    pickle.dump(allele, fp)
         return
 
     def fromFile(self, infile):
         with open(infile, 'r', 1) as fp:
-            self._snpnames = json.load(fp)
-            self._popnames = json.load(fp)
-            self._fishnames = json.load(fp)
-            self._fishies = json.load(fp)
-            #self._snpnames = pickle.load(fp)
-            #self._popnames = pickle.load(fp)
-            #self._fishnames = pickle.load(fp)
-            #self._fishies = pickle.load(fp)
+            self._snpnames = pickle.load(fp)
+            self._popnames = pickle.load(fp)
+            self._fishnames = pickle.load(fp)
+            idx = 0
+            self._fishies = []
+            while idx < len(self._fishnames):
+                idx = idx + 1
+                fish = {'pop' : pickle.load(fp), 'fishname' : pickle.load(fp)}
+                fish.setdefault('alleles', [])
+                nalleles = pickle.load(fp)
+                jdx = 0
+                while jdx < nalleles:
+                    fish['alleles'].append(pickle.load(fp))
+                    jdx = jdx + 1
+                self._fishies.append(fish)
 
         return
 
