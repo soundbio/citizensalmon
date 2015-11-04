@@ -1,6 +1,6 @@
 ﻿# Population provides interface to population allele data
 from multipledispatch import dispatch
-import time
+import pickle
 
 class Population(object):
     """container for population allele data"""
@@ -10,7 +10,7 @@ class Population(object):
     _fishnames = []
     _fishies = []
     _snps = []
-    __fsts = None
+
     __snptobinCallback = None
 
     # initialization
@@ -39,6 +39,22 @@ class Population(object):
             idx = idx + 4
         return [allele0, allele1]
 
+    def toFile(self, outfile):
+        with open(outfile, 'wb', 1) as fp:
+            pickle.dump(self._snpnames, fp)
+            pickle.dump(self._popnames, fp)
+            pickle.dump(self._fishnames, fp)
+            pickle.dump(self._fishies, fp)
+        return
+
+    def fromFile(self, infile):
+        with open(infile, 'rb', 1) as fp:
+            self._snpnames = pickle.load(fp)
+            self._popnames = pickle.load(fp)
+            self._fishnames = pickle.load(fp)
+            self._fishies = pickle.load(fp)
+        return
+
     def popnames(self):
         """popnames"""
         return self._popnames
@@ -49,30 +65,6 @@ class Population(object):
 
     def fishnames(self):
         return self._fishnames
-
-    #@dispatch(str,str)
-    #def fst(self, pop0, pop1):
-    #    # return cached values
-    #    if self.__fsts == None or self.__fsts[pop] == None:
-    #        self.__fsts = {pop : map(self.__popmean, self.alleles(pop))}
-    #    return self.__fsts['pop']
-
-    #@dispatch(str)
-    #def var(self, pop):
-    #    # return cached values
-    #    if self.__fsts == None or self.__fsts[pop] == None:
-    #        self.__fsts = {pop : map(self.__popmean, self.alleles(pop))}
-    #    return self.__fsts['pop']
-
-    #def var(self):
-    #    # return cached values
-    #    if self.__fsts == None or self.__fsts['pop'] == None:
-    #        popmean = map(self.__popmean, self.alleles)
-    #        vars = []
-    #        for allele in self.alleles:
-    #            vars
-    #        self.__fsts = {'pop' : {'mean' : popmean, 'var' : popvar}}
-    #    return self.__fsts['pop']
 
     @dispatch(str, str)
     def fishies(self, pop, fishname):

@@ -8,15 +8,11 @@ from collections import defaultdict
 class GenPopData(PopApi):
     """class to read and massage GenPop data for PCA"""
 
-    # data
-    __fp = 0
-
     # initialization
     def __init__(self, genpopFilepath):
         PopApi.__init__(self, None)
-        self.__fp = open(genpopFilepath)
-        self.__read()
-        self.__fp.close()
+        with open(genpopFilepath, 'r', 1) as fp:
+            self.__read(fp)
 
     # implementation
     def __snptobin(self, snp):
@@ -36,7 +32,7 @@ class GenPopData(PopApi):
     #        idx = idx + 4
     #    return [allele0, allele1]
 
-    def __read(self):
+    def __read(self, fp):
         """__read"""
         section = 'head'
         pop = ''
@@ -46,7 +42,7 @@ class GenPopData(PopApi):
 
         while True:
             if nopop:
-                line = self.__fp.readline()
+                line = fp.readline()
                 if line == '':
                     break
             else:
@@ -55,7 +51,7 @@ class GenPopData(PopApi):
             if section == 'snpdata':
 
                 if line.startswith('Pop'):
-                    line = self.__fp.readline()
+                    line = fp.readline()
                     if line == '':
                         raise 'bummer!'
                     pop = line[0:re.search(r'\d', line).start()]
