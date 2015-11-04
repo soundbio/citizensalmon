@@ -33,6 +33,9 @@
     <Compile Include="pca_synth_data.py" />
     <Compile Include="population.py" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="genepop_western_alaska_chinook_RAD.txt" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
