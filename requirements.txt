@@ -1,5 +1,6 @@
 alabaster==0.7.6
 appnope==0.1.0
+autoprotocol==2.5.0
 Babel==2.1.1
 backports.ssl-match-hostname==3.4.0.2
 certifi==2015.9.6.2
