@@ -30,3 +30,4 @@ elif True:
     apop.fromFile('alaska_chinook.pickle')
     apca = AllelesPCA(apop)
     mean = apca.popmean(apop.popnames()[2])
+    fst = apca.fst(apop.popnames()[2], None)

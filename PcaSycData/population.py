@@ -63,6 +63,12 @@ class Population(object):
         return
 
     def fromFile(self, infile):
+        self._snpnames = []
+        self._popnames = []
+        self._fishnames = []
+        self._fishies = []
+        self._snps = []
+
         with open(infile, 'rb', 1) as fp:
             self._snpnames = cPickle.load(fp)
             self._popnames = cPickle.load(fp)
