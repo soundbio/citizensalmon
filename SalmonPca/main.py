@@ -25,8 +25,9 @@ elif False:
     alleles = gpd.alleles()                     # all alleles of all populations
     alleles = gpd.alleles(gpd.popnames()[2])    # all alleles in third population
 elif True:
-    #apop = GenePopData("genepop_western_alaska_chinook_RAD.txt")
     apop = Population(None)
+    apop.fromGenePop("genepop_western_alaska_chinook_RAD.txt")
+    apop.toFile('alaska_chinook.pickle')
     apop.fromFile('alaska_chinook.pickle')
     apca = AllelesPCA(apop)
     mean = apca.popmean(apop.popnames()[2])
