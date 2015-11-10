@@ -1,6 +1,10 @@
 ﻿# Population provides interface to population allele data
 from multipledispatch import dispatch
 import cPickle
+import string
+import fileinput
+import re
+from collections import defaultdict
 
 class Population(object):
     """container for population allele data"""
@@ -87,6 +91,79 @@ class Population(object):
                 self._fishies.append(fish)
                 idx = idx + 1
         return
+
+    def fromGenePop(self, filepath):
+        """fromGenePop"""
+        self._snpnames = []
+        self._popnames = []
+        self._fishnames = []
+        self._fishies = []
+        self._snps = []
+
+        with open(filepath, 'r', 1) as fp:
+            self.__read(fp)
+
+    def __read(self, fp):
+        """__read"""
+        section = 'head'
+        pop = ''
+        fishinfo = ''
+        fish = None
+        nopop = True
+
+        while True:
+            if nopop:
+                line = fp.readline()
+                if line == '':
+                    if not fish is None:
+                        fish['alleles'] = self._alleles()
+                        self._fishies.append(fish)
+                    break
+            else:
+                nopop = True
+
+            if section == 'snpdata':
+
+                if line.startswith('Pop'):
+                    line = fp.readline()
+                    if line == '':
+                        raise 'bummer!'
+                    pop = line[0:re.search(r'\d', line).start()]
+                    self._popnames.append(pop)
+
+                if re.search(r'4\d', line) != 0:
+
+                    # save old sample
+                    if not fish is None:
+                        fish['alleles'] = self._alleles()
+                        self._fishies.append(fish)
+
+                    # new sample
+                    self._snps = []
+                    fishname = line[0:re.search(r',\t', line).start()]
+                    self._fishnames.append(fishname)
+                    fish = {'pop' : pop, 'fishname' : fishname}
+                    fish.setdefault('alleles', [])
+                    line = line[re.search(r',\t', line).start()+2:]
+
+                line = line.strip(' \t\r\n')
+                self._snps.extend(line.split('\t'))
+                continue
+
+            if section == 'snpnames':
+
+                if line.startswith('Pop'):
+                    section = 'snpdata'
+                    nopop = False
+                    continue
+                self._snpnames.append(line.strip(' \t\r\n'))
+                continue
+
+            if section == 'head':
+
+                if line.startswith(':'):
+                    section = 'snpnames'
+                continue
 
     def popnames(self):
         """popnames"""
