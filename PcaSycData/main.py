@@ -1,19 +1,16 @@
-﻿from genepop_data import GenePopData
-from population import Population
+﻿from population import Population
 
-# example use reading GenePop data and into a Population object
+# example use of GenePopData and Population
+apop = Population(None)
+
+# read and process data in GenePop file 'genepop_western_alaska_chinook_RAD.txt'
+apop.fromGenePop("genepop_western_alaska_chinook_RAD.txt")
+
+#save to pickle file
+apop.toFile('alaska_chinook.pickle')
 
 # once data are pickled, we no longer need GenePopData 
 # to retrieve data from the original data file
-apop = Population(None)
-
-# read data from gemepop format file
-apop.fromGenePop("genepop_western_alaska_chinook_RAD.txt")
-
-# save allele data to pickle file for quicker read
-apop.toFile('alaska_chinook.pickle')
-
-# read alleles from pickle file
 apop.fromFile('alaska_chinook.pickle')
 
 # get fish information by population
