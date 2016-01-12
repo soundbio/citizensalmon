@@ -22,6 +22,7 @@ noisy = real + np.random.randn(*real.shape)*255
 # (observations, features) matrix
 M = noisy.reshape(noisy.shape[0],-1)
 
+
 # singular value decomposition factorises your data matrix such that:
 # 
 #   M = U*S*V.T     (where '*' is matrix multiplication)

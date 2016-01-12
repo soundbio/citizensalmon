@@ -5,10 +5,10 @@ lib_path = os.path.abspath(os.path.join('..', 'PcaSycData'))
 sys.path.append(lib_path)
 
 from population import Population as PopApi
+import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.interpolate import griddata
 import matplotlib.pyplot as plt
-import numpy as np
 import random
 import time
 from math import sqrt
@@ -94,7 +94,7 @@ class PcaSynthData(PopApi):
                     snp = "03"
                 else:
                     # a > b and a > c
-                    snp = 01
+                    snp = "01"
 
                 if snp == '04':
                     raise Exception('bummer! Bad SNP!')

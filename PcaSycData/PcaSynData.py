@@ -57,4 +57,3 @@ ax.set_ylim3d(-6,6)
 ax.set_zlim3d(-6,6)
 ax.scatter(x,y,z)
 plt.show()
-    

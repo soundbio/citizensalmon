@@ -97,7 +97,7 @@ class AllelesPCA(object):
         if pop == refpop:
             return 0
 
-        refvar = self.popvar(refpop, None)
+        refvar = self.popvar(refpop)
 
         if refpop == None:
             ralleles = self.__population.alleles()
