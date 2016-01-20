@@ -34,5 +34,5 @@ elif True:
 
     apca = AllelesPCA(apop)
     mean = apca.popmean(apop.popnames()[2])
-    covar = apca.covarmat(apop.popnames()[2])
+    # covar = apca.covarmat(apop.popnames()[2])
     pca = apca.principleAxes(apop.popnames()[2])
