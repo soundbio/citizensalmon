@@ -90,11 +90,10 @@ class AllelesPCA(object):
 
         # calculate covariance matrix of alleles
         covar = np.zeros(shape=(meanlen,meanlen))
-        outer = np.zeros(shape=(meanlen,meanlen))
         for allele in alleles:
             try:
-                np.outer(allele,allele,outer)
-                covar = covar + outer
+                avar = allele - mean
+                covar = covar + np.outer(avar,avar)
             except:
                 ex = sys.exc_info()[0]
             continue
@@ -105,6 +104,7 @@ class AllelesPCA(object):
 
     def principleAxes(self, pop):
         covar = self.covarmat(pop)
+        tt = covar.shape
 
         evals, evects = np.linalg.eig(covar)
         eigentuples = zip(evals, evects)
