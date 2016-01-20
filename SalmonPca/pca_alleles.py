@@ -12,6 +12,7 @@ class AllelesPCA(object):
     __population = None
     __means = {}   # popmean cache
     __vars = {}    # popvar cache
+    __covars = {}  # covarmat cache
 
     def __init__(self, popapi):
         self.__population = popapi
@@ -71,6 +72,43 @@ class AllelesPCA(object):
 
         self.__vars[popname] = varsum   # cache result
         return varsum
+
+    def covarmat(self, pop):
+        popname = 'none'
+        if pop == None:
+            if 'none' in self.__covars:
+                return self.__covars['none']  # return cached value
+            alleles = self.__population.alleles()
+        else:
+            popname = pop
+            if pop in self.__covars:
+                return self.__covars[pop]     # return cached value
+            alleles = self.__population.alleles(pop)
+
+        mean = self.popmean(pop)
+        meanlen = len(mean)
+
+        # calculate covariance matrix of alleles
+        covar = np.zeros(shape=(meanlen,meanlen))
+        outer = np.zeros(shape=(meanlen,meanlen))
+        for allele in alleles:
+            try:
+                np.outer(allele,allele,outer)
+                covar = covar + outer
+            except:
+                ex = sys.exc_info()[0]
+            continue
+
+        # cache result
+        self.__covars[pop] = covar
+        return covar
+
+    def principleAxes(self, pop):
+        covar = self.covarmat(pop)
+
+        evals, evects = np.linalg.eig(covar)
+        eigentuples = zip(evals, evects)
+        return eigentuples
 
 
     def popvarcloud(self, pop):
