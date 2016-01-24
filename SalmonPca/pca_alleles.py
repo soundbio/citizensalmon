@@ -6,6 +6,7 @@ sys.path.append(lib_path)
 from multipledispatch import dispatch
 import numpy as np
 import population as PopApi
+import scipy
 
 class AllelesPCA(object):
 
@@ -102,11 +103,23 @@ class AllelesPCA(object):
         self.__covars[pop] = covar
         return covar
 
+    def eigenstuffPowerMethod(self,pop):
+        covar = self.covarmat(pop)
+
+        vlen = covar.shape[0]
+
+        eigen = np.zeros(shape=(vlen))
+        
+        evals, evects = scipy.sparse.linalg.eigsh(covar)
+        eigentuples = zip(evals, evects)
+        return eigentuples
+
+
+
     def principleAxes(self, pop):
         covar = self.covarmat(pop)
-        tt = covar.shape
 
-        evals, evects = np.linalg.eig(covar)
+        evals, evects = scipy.sparse.linalg.eigsh(covar)
         eigentuples = zip(evals, evects)
         return eigentuples
 
