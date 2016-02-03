@@ -33,6 +33,16 @@ elif True:
     """
 
     apca = AllelesPCA(apop)
-    mean = apca.popmean(apop.popnames()[2])
+    # mean = apca.popmean(apop.popnames()[2])
     # covar = apca.covarmat(apop.popnames()[2])
-    pca = apca.principleAxes(apop.popnames()[2])
+    # pca = apca.principleAxes(apop.popnames()[2])
+    maxeignenvalue, eigenvector = apca.eigenstuffPowerMethod(apop.popnames()[2])
+
+    maxidx = 0
+    maxelement = 0
+    for idx in range(0, eigenvector.shape[0]-1):
+        if maxelement < eigenvector[idx]:
+            maxelement = eigenvector[idx]
+            maxidx = idx
+
+    print maxeignenvalue, maxidx/4, apop.snpnames[maxidx/4]
