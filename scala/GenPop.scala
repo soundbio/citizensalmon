@@ -206,8 +206,8 @@ case class SNPDataSet(populations: List[Population]) {
 }
 
 object SNPDataSetLoader {
-  def loadPopulations(dir: String = "/Users/jakemannix/bio/hivebio/citizen_salmon",
-                      file: String = "genepop_western_alaska_chinook_RAD.txt") = {
+  def load(dir: String = "PcaSycData",
+           file: String = "genepop_western_alaska_chinook_RAD.txt") = {
     val lines = Source.fromFile(dir + "/" + file).getLines.toList
     val (header, popLines) = (lines.take(10946), lines.drop(10946))
     val groupedLines = popLines.mkString("\n").split("Pop").map(_.split("\n").toList).zipWithIndex.toList
@@ -216,6 +216,6 @@ object SNPDataSetLoader {
         if (line.contains(",")) Some(GenotypeVectorBuilder.apply(popId, line)) else None
       ))
     }
-    populations
+    SNPDataSet(populations)
   }
 }
