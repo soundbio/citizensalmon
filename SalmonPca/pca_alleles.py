@@ -14,7 +14,7 @@ class AllelesPCA(object):
     __population = None
     __means = {}   # popmean cache
     __vars = {}    # popvar cache
-    __covars = {}  # covarmat cache
+    #__covars = {}  # covarmat cache
 
     def __init__(self, popapi):
         self.__population = popapi
@@ -78,13 +78,13 @@ class AllelesPCA(object):
     def covarmat(self, pop):
         popname = 'none'
         if pop == None:
-            if 'none' in self.__covars:
-                return self.__covars['none']  # return cached value
+            #if 'none' in self.__covars:
+            #    return self.__covars['none']  # return cached value
             alleles = self.__population.alleles()
         else:
             popname = pop
-            if pop in self.__covars:
-                return self.__covars[pop]     # return cached value
+            #if pop in self.__covars:
+            #    return self.__covars[pop]     # return cached value
             alleles = self.__population.alleles(pop)
 
         mean = self.popmean(pop)
@@ -92,16 +92,26 @@ class AllelesPCA(object):
 
         # calculate covariance matrix of alleles
         covar = np.zeros(shape=(meanlen, meanlen))
+        kdx = 0
         for allele in alleles:
             try:
                 avar = allele - mean
-                covar = covar + np.outer(avar,avar)
+                for idx in range(0, meanlen):
+                    for jdx in range(idx, meanlen):
+                        covar[idx][jdx] = covar[idx][jdx]  + avar[idx]*avar[jdx]
+                kdx = kdx+1
+                print str(kdx) + "  " + datetime.date.today().strftime('%Y-%m-%d %H:%M')
             except:
                 ex = sys.exc_info()[0]
+
             continue
 
+        for idx in range(0, meanlen):
+            for jdx in range(idx, meanlen):
+                covar[jdx][idx] = covar[idx][jdx]
+
         # cache result
-        self.__covars[pop] = covar
+        #self.__covars[pop] = covar
         return covar
 
     def popdot(self, vec0, vec1):
