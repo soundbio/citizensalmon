@@ -96,19 +96,20 @@ class AllelesPCA(object):
         for allele in alleles:
             try:
                 avar = allele - mean
-                for idx in range(0, meanlen):
-                    for jdx in range(idx, meanlen):
-                        covar[idx][jdx] = covar[idx][jdx]  + avar[idx]*avar[jdx]
-                kdx = kdx+1
-                print str(kdx) + "  " + datetime.date.today().strftime('%Y-%m-%d %H:%M')
+                covar = covar + np.outer(avar,avar)
+                #for idx in range(0, meanlen):
+                #    for jdx in range(idx, meanlen):
+                #        covar[idx][jdx] = covar[idx][jdx]  + avar[idx]*avar[jdx]
+                #kdx = kdx+1
+                #print str(kdx) + "  " + datetime.date.today().strftime('%Y-%m-%d %H:%M')
             except:
                 ex = sys.exc_info()[0]
 
             continue
 
-        for idx in range(0, meanlen):
-            for jdx in range(idx, meanlen):
-                covar[jdx][idx] = covar[idx][jdx]
+        #for idx in range(0, meanlen):
+        #    for jdx in range(idx, meanlen):
+        #        covar[jdx][idx] = covar[idx][jdx]
 
         # cache result
         #self.__covars[pop] = covar
