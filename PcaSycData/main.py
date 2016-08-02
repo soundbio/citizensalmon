@@ -4,14 +4,14 @@
 apop = Population(None)
 
 # read and process data in GenePop file 'genepop_western_alaska_chinook_RAD.txt'
-apop.fromGenePop("genepop_western_alaska_chinook_RAD.txt")
+#apop.fromGenePop("genepop_western_alaska_chinook_RAD.txt")
 
 #save to pickle file
-apop.toFile('alaska_chinook.pickle')
+#apop.toPickle('alaska_chinook.pickle')
 
 # once data are pickled, we no longer need GenePopData 
 # to retrieve data from the original data file
-apop.fromFile('alaska_chinook.pickle')
+apop.fromPickle('alaska_chinook.pickle')
 
 # get fish information by population
 fishies = apop.fishies()                    # list of all fish (and alleles) in file

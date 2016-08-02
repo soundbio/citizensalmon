@@ -45,7 +45,7 @@ class Population(object):
             idx = idx + 4
         return [allele0, allele1]
 
-    def toFile(self, outfile):
+    def toPickle(self, outfile):
         with open(outfile, 'wb', 1) as fp:
             cPickle.dump(self._snpnames, fp)
             cPickle.dump(self._popnames, fp)
@@ -66,7 +66,7 @@ class Population(object):
             fp.flush()
         return
 
-    def fromFile(self, infile):
+    def fromPickle(self, infile):
         self._snpnames = []
         self._popnames = []
         self._fishnames = []
