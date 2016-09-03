@@ -6,3 +6,4 @@
 
 # ignore the playground IPython Notebook
 informative-snps/playground.ipynb
+*playground.ipynb
