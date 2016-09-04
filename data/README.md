@@ -49,3 +49,31 @@ order by
 ```
 
 SNP list in that query was created from mapped SNP data identifying which SNP IDs fell within the final 96 used. Of the total 96, only 46 were sourced from Larson data, thus only those 46 could be mapped and checked against in this query. Of the 46, only one SNP ID was not found in the `informative_cuts` table: `snp:ID:8354`.
+
+### File: `iupac-codes.pkl`
+
+Python dict stored as a pickled file, created via the following script:
+
+```python
+# IUPAC codes pulled from:
+# http://www.bioinformatics.org/sms/iupac.html
+import pickle as pkl
+d = {'U':['T'],
+     'R':['A', 'G'],
+     'Y':['C', 'T'],
+     'S':['G', 'C'],
+     'W':['A', 'T'],
+     'K':['G', 'T'],
+     'M':['A', 'C'],
+     'B':['C', 'G', 'T'],
+     'D':['A', 'G', 'T'],
+     'H':['A', 'C', 'T'],
+     'V':['A', 'C', 'G'],
+     'N':['A', 'C', 'G', 'T']}
+with open('iupac-codes.pkl', 'wb') as f:
+    pkl.dump(d, f)
+
+# load data back into python via:
+#with open('iupac-codes.pkl', 'rb') as f:
+#    d = pkl.load(f)
+```
