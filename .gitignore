@@ -4,6 +4,9 @@
 # .pyc files
 *.pyc
 
-# ignore the playground IPython Notebook
+# ignore the playground IPython Notebook(s)
 informative-snps/playground.ipynb
 *playground.ipynb
+
+# database files (they tend to be large)
+*.db
