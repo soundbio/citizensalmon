@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{329296ef-df16-432b-999a-c6a9650a2495}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>PcaStackOverflow.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>

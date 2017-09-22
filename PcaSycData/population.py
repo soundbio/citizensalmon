@@ -14,6 +14,7 @@ class Population(object):
     _fishnames = []
     _fishies = []
     _snps = []
+    _alleledist = []
 
     __snptobinCallback = None
 
@@ -232,3 +233,12 @@ class Population(object):
             alleles.extend(self.alleles(pop))
         return alleles
 
+
+    # modify alleles in place 
+    @dispatch()
+    def alleleDistribution(self):
+        for pop in self.__population.popnames:
+            for allele in self.__population.alleles(pop):
+                self._alleledist
+        
+        return
